@@ -1,3 +1,4 @@
+<!-- js/Layouts/AppLayout.vue -->
 <script setup>
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';

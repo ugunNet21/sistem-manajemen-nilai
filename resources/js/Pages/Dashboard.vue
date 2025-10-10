@@ -1,3 +1,4 @@
+<!-- resources/js/Pages/Dashboard.vue -->
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Welcome from '@/Components/Welcome.vue';

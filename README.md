@@ -102,7 +102,9 @@ composer install
 composer require laravel/jetstream
 php artisan jetstream:install inertia
 npm install @vitejs/plugin-vue@latest --save-dev
-composer require spatie/laravel-permission 
+composer require spatie/laravel-permission
+composer require maatwebsite/excel
+php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
 # Atau spatie/laravel-excel untuk import/export
 ```
 **Catatan**: Spatie telah dicustom untuk menggunakan UUID pada model.

@@ -3,6 +3,14 @@
 ## About
 Project ini adalah aplikasi sederhana untuk mengelola data nilai siswa, dibuat sebagai bagian dari technical test recruitment. Aplikasi ini mempermudah penilaian terhadap siswa dengan fitur authentication, CRUD (Create, Read, Update, Delete), serta import/export data dalam format Excel. Hal ini membuat proses pengelolaan data lebih transparan dan efisien.
 
+## Screenshoot
+
+### Dashboard
+![Dashboard](public/assets/images/img-dashboard.png)
+
+### Landing Page
+![Landing Page](public/assets/images/img-landingpage.png)
+
 ## Arsitektur
 Project ini menggunakan arsitektur yang digabung:
 - **Laravel** sebagai backend

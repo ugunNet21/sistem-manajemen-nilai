@@ -22,27 +22,23 @@ defineExpose({
 
 <template>
     <div class="min-h-screen bg-gray-50">
+
         <Head>
             <title>Admin Dashboard - Sistem Nilai Siswa</title>
         </Head>
-        
+
         <FlashMessage />
-        
+
         <!-- Sidebar -->
-        <AdminSidebar 
-            :sidebar-open="sidebarOpen" 
-            :current-page="currentPage"
-            @update:current-page="currentPage = $event"
-            @close-sidebar="sidebarOpen = false"
-        />
+        <AdminSidebar :sidebar-open="sidebarOpen" :current-page="currentPage"
+            @update:current-page="currentPage = $event" @close-sidebar="sidebarOpen = false" />
+        <div v-if="sidebarOpen" class="fixed inset-0 bg-black/50 z-40 lg:hidden" @click="sidebarOpen = false" />
 
         <!-- Main Content -->
         <div class="lg:ml-64">
             <!-- Top Navigation -->
-            <AdminHeader 
-                @toggle-sidebar="toggleSidebar"
-            />
-            
+            <AdminHeader @toggle-sidebar="toggleSidebar" />
+
             <!-- Page Content -->
             <main class="p-6">
                 <slot />

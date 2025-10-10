@@ -29,13 +29,12 @@ const logout = () => {
 </script>
 
 <template>
-    <aside 
-        :class="[
-            'fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white transform transition-transform duration-300',
-            sidebarOpen ? 'translate-x-0' : '-translate-x-0 lg:translate-x-0',
-            'lg:translate-x-0'
-        ]"
-    >
+    <aside :class="[
+        'fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white transition-transform duration-300',
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full',
+        'lg:translate-x-0'
+    ]">
+
         <div class="flex items-center justify-between p-6 border-b border-blue-700">
             <div class="flex items-center space-x-3">
                 <i class="fas fa-graduation-cap text-2xl"></i>
@@ -45,26 +44,19 @@ const logout = () => {
                 <i class="fas fa-times text-xl"></i>
             </button>
         </div>
-        
+
         <nav class="p-4 space-y-2">
-            <a
-                v-for="item in menuItems"
-                :key="item.id"
-                @click="navigateTo(item)"
-                :class="[
-                    'flex items-center space-x-3 px-4 py-3 rounded-lg cursor-pointer transition',
-                    currentPage === item.id ? 'bg-blue-700' : 'hover:bg-blue-700'
-                ]"
-            >
+            <a v-for="item in menuItems" :key="item.id" @click="navigateTo(item)" :class="[
+                'flex items-center space-x-3 px-4 py-3 rounded-lg cursor-pointer transition',
+                currentPage === item.id ? 'bg-blue-700' : 'hover:bg-blue-700'
+            ]">
                 <i :class="[item.icon, 'w-5']"></i>
                 <span>{{ item.label }}</span>
             </a>
-            
+
             <div class="pt-4 border-t border-blue-700 mt-4">
-                <a 
-                    @click="logout"
-                    class="flex items-center space-x-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-red-600 transition"
-                >
+                <a @click="logout"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-red-600 transition">
                     <i class="fas fa-sign-out-alt w-5"></i>
                     <span>Logout</span>
                 </a>

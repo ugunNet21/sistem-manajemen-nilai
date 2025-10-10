@@ -6,3 +6,13 @@
 [x-cloak] {
     display: none;
 }
+
+/* Smooth transitions untuk sidebar */
+.sidebar-transition {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Prevent body scroll ketika sidebar terbuka di mobile */
+body.sidebar-open {
+    overflow: hidden;
+}

@@ -1,3 +1,4 @@
+// resources/js/ssr.js
 import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { createInertiaApp } from '@inertiajs/vue3';

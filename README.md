@@ -134,13 +134,13 @@ npm run dev
 3. **Akses Aplikasi**
 Buka browser dan kunjungi `http://127.0.0.1:8000`. Halaman login akan muncul. Gunakan akun contoh untuk login.
 
-### Contoh Akun User untuk Login
+### Contoh Akun User untuk Login (cek di seeder)
 - **Email**: `zaki@sekolahku.com`
 - **Password**: `password`
 
-**Catatan**: Anda bisa register user baru melalui halaman register jika fitur tersebut diaktifkan.
+**Catatan**: bisa register juga
 
-## Fitur Tambahan
+## Lainnya
 - Validasi input pada form (menggunakan Laravel Request validation).
 - Filter data pada dashboard (misalnya, berdasarkan nama siswa atau mapel).
 - Styling rapi menggunakan Tailwind CSS.

@@ -93,6 +93,7 @@ composer install
 ```bash
 composer require laravel/jetstream
 php artisan jetstream:install inertia
+npm install @vitejs/plugin-vue@latest --save-dev
 composer require spatie/laravel-permission 
 # Atau spatie/laravel-excel untuk import/export
 ```

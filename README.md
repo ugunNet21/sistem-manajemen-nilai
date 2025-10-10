@@ -1,61 +1,146 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Penilaian Siswa
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About
+Project ini adalah aplikasi sederhana untuk mengelola data nilai siswa, dibuat sebagai bagian dari technical test recruitment. Aplikasi ini mempermudah penilaian terhadap siswa dengan fitur authentication, CRUD (Create, Read, Update, Delete), serta import/export data dalam format Excel. Hal ini membuat proses pengelolaan data lebih transparan dan efisien.
 
-## About Laravel
+## Arsitektur
+Project ini menggunakan arsitektur yang digabung:
+- **Laravel** sebagai backend
+- **Vue 3** sebagai frontend
+- **Inertia.js** untuk menghubungkan keduanya
+- **Tailwind CSS** untuk styling
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Alasan Memilih Arsitektur
+Arsitektur ini dipilih karena memungkinkan pengembangan full-stack yang terintegrasi dengan baik, di mana Laravel menangani routing dan rendering Vue components secara seamless melalui Inertia.js. Ini lebih sederhana dibandingkan memisahkan backend sebagai REST API murni dan frontend sebagai SPA terpisah, karena mengurangi overhead dalam pengelolaan API endpoints dan authentication. Selain itu, Inertia.js mendukung pengembangan cepat dengan tetap mempertahankan manfaat SSR (Server-Side Rendering) dari Laravel, yang cocok untuk aplikasi sederhana seperti ini.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Struktur project mengikuti **Clean Code Architecture**, dengan pemisahan tanggung jawab menggunakan:
+- Service
+- Repository
+- Controller
+- Dependency Injection (DI)
+- Request validation
+- Interface
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Hal ini memastikan kode yang maintainable dan testable.
 
-## Learning Laravel
+## Prerequisites
+- PHP >= 8.2 (untuk Laravel 12)
+- Composer (untuk menginstall dependencies PHP)
+- Node.js >= 18.x dan NPM (untuk frontend Vue dan Tailwind)
+- PostgreSQL (direkomendasikan, meskipun MySQL juga bisa digunakan)
+- Git (untuk clone repository)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation
+Ikuti langkah-langkah berikut untuk menginstall dan menjalankan project. Pastikan semua prerequisites sudah terinstall.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1. Clone Repository
+Clone project dari GitHub:
+```bash
+git clone https://git@github.com:ugunNet21/sistem-manajemen-nilai.git
+cd repo-name
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Setup Database (PostgreSQL)
+1. Jalankan PostgreSQL server.
+2. Buat database baru bernama `db_sistem_nilai`.
+3. Buat user database dengan hak akses yang diperlukan. Jalankan perintah berikut sebagai superuser (misalnya, user `postgres`):
+```bash
+sudo -u postgres psql
+```
+4. Di dalam psql shell, jalankan perintah SQL berikut:
+```sql
+CREATE DATABASE db_sistem_nilai;
+CREATE USER user123 WITH PASSWORD 'passwordku123';
+GRANT CONNECT ON DATABASE db_sistem_nilai TO user123;
+GRANT USAGE, CREATE ON SCHEMA public TO user123;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO user123;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO user123;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO user123;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO user123;
+\q
+```
+5. Verifikasi koneksi:
+```bash
+psql -h localhost -U user123 -d db_sistem_nilai
+```
+Masukkan password `passwordku123` saat diminta. Jika berhasil, Anda akan masuk ke shell psql.
 
-## Laravel Sponsors
+### 3. Konfigurasi Environment (.env)
+1. Copy file `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+2. Edit file `.env` dengan detail database Anda:
+```
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=db_sistem_nilai
+DB_USERNAME=user123
+DB_PASSWORD=passwordku123
+```
+3. Generate app key:
+```bash
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 4. Install Dependencies
+1. Install PHP dependencies via Composer:
+```bash
+composer install
+```
+2. Install library tambahan (Jetstream untuk authentication, Spatie):
+```bash
+composer require laravel/jetstream
+php artisan jetstream:install inertia
+composer require spatie/laravel-permission 
+# Atau spatie/laravel-excel untuk import/export
+```
+**Catatan**: Spatie telah dicustom untuk menggunakan UUID pada model.
+3. Install Node.js dependencies untuk frontend:
+```bash
+npm install
+```
 
-### Premium Partners
+### 5. Jalankan Migration dan Seeder
+1. Jalankan migration untuk membuat tabel database (siswa dan nilai, beserta tabel default seperti users, sessions, dll.):
+```bash
+php artisan migrate
+```
+2. Jika ada seeder untuk data awal (misalnya, user contoh), jalankan:
+```bash
+php artisan db:seed
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 6. Compile Assets
+Build frontend assets:
+```bash
+npm run build
+```
 
-## Contributing
+## How to Run the Project
+1. **Jalankan Server Laravel**
+```bash
+php artisan serve
+```
+Aplikasi akan berjalan di `http://127.0.0.1:8000`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. **Jalankan Development Server untuk Frontend** (opsional untuk hot-reloading)
+```bash
+npm run dev
+```
 
-## Code of Conduct
+3. **Akses Aplikasi**
+Buka browser dan kunjungi `http://127.0.0.1:8000`. Halaman login akan muncul. Gunakan akun contoh untuk login.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Contoh Akun User untuk Login
+- **Email**: `zaki@sekolahku.com`
+- **Password**: `password`
 
-## Security Vulnerabilities
+**Catatan**: Anda bisa register user baru melalui halaman register jika fitur tersebut diaktifkan.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Fitur Tambahan
+- Validasi input pada form (menggunakan Laravel Request validation).
+- Filter data pada dashboard (misalnya, berdasarkan nama siswa atau mapel).
+- Styling rapi menggunakan Tailwind CSS.
+- Menggunakan migration untuk setup database.

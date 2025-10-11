@@ -13,6 +13,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(\App\Repositories\Contracts\Admin\StudentRepositoryInterface::class, \App\Repositories\Admin\StudentRepository::class);
         $this->app->bind(\App\Repositories\Contracts\Admin\GradeRepositoryInterface::class, \App\Repositories\Admin\GradeRepository::class);
+        $this->app->bind(\App\Repositories\Contracts\Admin\DashboardRepositoryInterface::class,\App\Repositories\Admin\DashboardRepository::class);
         
     }
 

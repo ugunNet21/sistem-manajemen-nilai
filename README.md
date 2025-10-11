@@ -1,7 +1,7 @@
 # Sistem Penilaian Siswa
 
 ## About
-Project ini adalah aplikasi sederhana untuk mengelola data nilai siswa, dibuat sebagai bagian dari technical test recruitment. Aplikasi ini mempermudah penilaian terhadap siswa dengan fitur authentication, CRUD (Create, Read, Update, Delete), serta import/export data dalam format Excel. Hal ini membuat proses pengelolaan data lebih transparan dan efisien.
+Project ini adalah aplikasi sederhana untuk mengelola data nilai siswa. Aplikasi ini mempermudah penilaian terhadap siswa dengan fitur authentication, CRUD (Create, Read, Update, Delete), serta import/export data dalam format Excel. Hal ini membuat proses pengelolaan data lebih transparan dan efisien.
 
 ## Screenshoot
 
@@ -105,6 +105,7 @@ npm install @vitejs/plugin-vue@latest --save-dev
 composer require spatie/laravel-permission
 composer require maatwebsite/excel
 php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
+composer require ramsey/uuid
 # Atau spatie/laravel-excel untuk import/export
 ```
 **Catatan**: Spatie telah dicustom untuk menggunakan UUID pada model.
@@ -116,11 +117,13 @@ npm install
 ### 5. Jalankan Migration dan Seeder
 1. Jalankan migration untuk membuat tabel database (siswa dan nilai, beserta tabel default seperti users, sessions, dll.):
 ```bash
-php artisan migrate
+- migrasi database: php artisan migrate
+- migrasi, drop, run seeder : php artisan migrate:fresh --seed 
 ```
-2. Jika ada seeder untuk data awal (misalnya, user contoh), jalankan:
+2. Jika run seeder saja:
 ```bash
-php artisan db:seed
+- run semua list seeder: php artisan db:seed
+- run contoh user seeder: php artisan db:seed --class=UserSeeder
 ```
 
 ### 6. Compile Assets

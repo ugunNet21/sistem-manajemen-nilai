@@ -1,114 +1,78 @@
 <!-- resources/js/Components/Admin/FlashMessage.vue -->
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, watch, ref } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 
+// Akses props
 const page = usePage();
 const show = ref(false);
 const message = ref('');
-const type = ref('success'); // success, error, warning, info
-const timeout = ref(null);
+const type = ref('success');
 
-const typeClasses = computed(() => {
-    switch (type.value) {
-        case 'success':
-            return 'bg-green-50 border-green-200 text-green-800';
-        case 'error':
-            return 'bg-red-50 border-red-200 text-red-800';
-        case 'warning':
-            return 'bg-yellow-50 border-yellow-200 text-yellow-800';
-        case 'info':
-            return 'bg-blue-50 border-blue-200 text-blue-800';
-        default:
-            return 'bg-green-50 border-green-200 text-green-800';
+const flash = computed(() => page.props.flash);
+
+watch(flash, (newValue) => {
+    if (newValue.success) {
+        message.value = newValue.success;
+        type.value = 'success';
+        show.value = true;
+        setTimeout(() => show.value = false, 3000);
+    } else if (newValue.error) {
+        message.value = newValue.error;
+        type.value = 'error';
+        show.value = true;
+        setTimeout(() => show.value = false, 3000);
     }
+}, { deep: true });
+
+// Style untuk notifikasi berdasarkan tipe (success/error)
+const notificationClass = computed(() => {
+    return {
+        'bg-green-500': type.value === 'success',
+        'bg-red-500': type.value === 'error',
+    };
 });
-
-const iconClasses = computed(() => {
-    switch (type.value) {
-        case 'success':
-            return 'fas fa-check-circle text-green-500';
-        case 'error':
-            return 'fas fa-exclamation-circle text-red-500';
-        case 'warning':
-            return 'fas fa-exclamation-triangle text-yellow-500';
-        case 'info':
-            return 'fas fa-info-circle text-blue-500';
-        default:
-            return 'fas fa-check-circle text-green-500';
-    }
-});
-
-onMounted(() => {
-    // Check for flash messages when component is mounted
-    checkForFlash();
-
-    // Listen for Inertia events
-    window.addEventListener('inertia:start', clearFlash);
-    window.addEventListener('inertia:finish', checkForFlash);
-});
-
-const checkForFlash = () => {
-    const flash = page.props.flash || {};
-
-    if (flash.success) {
-        setFlash('success', flash.success);
-    } else if (flash.error) {
-        setFlash('error', flash.error);
-    } else if (flash.warning) {
-        setFlash('warning', flash.warning);
-    } else if (flash.info) {
-        setFlash('info', flash.info);
-    }
-};
-
-const setFlash = (flashType, flashMessage) => {
-    // Clear any existing timeout
-    if (timeout.value) {
-        clearTimeout(timeout.value);
-    }
-
-    type.value = flashType;
-    message.value = flashMessage;
-    show.value = true;
-
-    // Auto-hide after 15 seconds
-    timeout.value = setTimeout(() => {
-        show.value = false;
-    }, 15000);
-};
-
-const clearFlash = () => {
-    if (timeout.value) {
-        clearTimeout(timeout.value);
-    }
-    show.value = false;
-};
-
-const closeFlash = () => {
-    clearFlash();
-};
 </script>
 
 <template>
-    <div v-if="show" class="fixed top-4 right-4 z-50 max-w-md w-full">
-        <div :class="typeClasses" class="border rounded-lg shadow-lg p-4 transition-all duration-300 transform">
-            <div class="flex items-start">
+    <!-- Transition untuk animasi muncul dan hilang -->
+    <transition enter-active-class="ease-out duration-300"
+        enter-from-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        enter-to-class="opacity-100 translate-y-0 sm:scale-100" leave-active-class="ease-in duration-200"
+        leave-from-class="opacity-100 translate-y-0 sm:scale-100"
+        leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+        <div v-if="show" :class="notificationClass"
+            class="fixed top-5 right-5 z-50 max-w-sm w-full text-white rounded-lg shadow-lg pointer-events-auto">
+            <div class="p-4 flex items-center">
                 <div class="flex-shrink-0">
-                    <i :class="iconClasses" class="text-xl"></i>
+                    <!-- Icon Success -->
+                    <svg v-if="type === 'success'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <!-- Icon Error -->
+                    <svg v-if="type === 'error'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
                 </div>
-                <div class="ml-3 flex-1">
-                    <p class="text-sm font-medium">{{ message }}</p>
+                <div class="ml-3">
+                    <p class="font-medium text-sm">{{ message }}</p>
                 </div>
-                <div class="ml-4 flex-shrink-0 flex">
-                    <button @click="closeFlash" class="inline-flex rounded-md focus:outline-none">
-                        <i class="fas fa-times" :class="type === 'success' ? 'text-green-500 hover:text-green-700' :
-                            type === 'error' ? 'text-red-500 hover:text-red-700' :
-                                type === 'warning' ? 'text-yellow-500 hover:text-yellow-700' :
-                                    'text-blue-500 hover:text-blue-700'"></i>
+                <div class="ml-auto pl-3">
+                    <button @click="show = false"
+                        class="-mx-1.5 -my-1.5 bg-transparent rounded-md p-1.5 inline-flex text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-500 focus:ring-white">
+                        <span class="sr-only">Dismiss</span>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>

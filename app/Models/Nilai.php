@@ -25,7 +25,7 @@ class Nilai extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
+    protected $appends = ['grade'];
     /**
      * Relationship: Nilai belongs to Siswa
      */

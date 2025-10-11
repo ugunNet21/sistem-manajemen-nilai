@@ -14,19 +14,25 @@ Route::prefix('admin')->middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-    
+
+    // Students
     Route::resource('students', App\Http\Controllers\Admin\StudentController::class)
         ->names('admin.students')
         ->parameters(['students' => 'id']);
 
+    // Grades
+    Route::post('grades/import', [App\Http\Controllers\Admin\GradeController::class, 'import'])->name('grades.import');
+    Route::get('grades/export', [App\Http\Controllers\Admin\GradeController::class, 'export'])->name('grades.export');
     Route::resource('grades', App\Http\Controllers\Admin\GradeController::class)
         ->names('admin.grades')
         ->parameters(['grades' => 'id']);
 
+    // Reports
     Route::resource('reports', App\Http\Controllers\Admin\ReportController::class)
         ->names('admin.reports')
         ->parameters(['reports' => 'id']);
 
+    // Settings
     Route::resource('settings', App\Http\Controllers\Admin\SettingController::class)
         ->names('admin.settings')
         ->parameters(['settings' => 'id']);

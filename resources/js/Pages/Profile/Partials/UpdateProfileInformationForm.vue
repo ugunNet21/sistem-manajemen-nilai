@@ -1,3 +1,4 @@
+<!-- js/Pages/Profile/Partials/UpdateProfileInformationForm.vue -->
 <script setup>
 import { ref } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';

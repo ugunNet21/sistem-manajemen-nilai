@@ -14,7 +14,8 @@ const menuItems = [
     { id: 'siswa', label: 'Data Siswa', icon: 'fas fa-users', route: 'admin.students.index' },
     { id: 'nilai', label: 'Data Nilai', icon: 'fas fa-clipboard-list', route: 'admin.grades.index' },
     { id: 'laporan', label: 'Laporan', icon: 'fas fa-file-alt', route: 'admin.reports.index' },
-    { id: 'settings', label: 'Pengaturan', icon: 'fas fa-cog', route: 'admin.settings.index' }
+    { id: 'settings', label: 'Pengaturan', icon: 'fas fa-cog', route: 'admin.settings.index' },
+    { id: 'home', label: 'Lihat Situs', icon: 'fas fa-globe', url: '/', external: true },
 ];
 
 const navigateTo = (item) => {
@@ -46,13 +47,22 @@ const logout = () => {
         </div>
 
         <nav class="p-4 space-y-2">
-            <a v-for="item in menuItems" :key="item.id" @click="navigateTo(item)" :class="[
-                'flex items-center space-x-3 px-4 py-3 rounded-lg cursor-pointer transition',
-                currentPage === item.id ? 'bg-blue-700' : 'hover:bg-blue-700'
-            ]">
-                <i :class="[item.icon, 'w-5']"></i>
-                <span>{{ item.label }}</span>
-            </a>
+            <template v-for="item in menuItems" :key="item.id">
+                <!-- Jika item external, gunakan <a> biasa -->
+                <a v-if="item.external" :href="item.url" target="_blank" rel="noopener noreferrer"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-blue-700 transition">
+                    <i :class="[item.icon, 'w-5']"></i>
+                    <span>{{ item.label }}</span>
+                </a>
+
+                <!-- Jika bukan external, pakai router -->
+                <a v-else @click="navigateTo(item)"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg cursor-pointer transition"
+                    :class="currentPage === item.id ? 'bg-blue-700' : 'hover:bg-blue-700'">
+                    <i :class="[item.icon, 'w-5']"></i>
+                    <span>{{ item.label }}</span>
+                </a>
+            </template>
 
             <div class="pt-4 border-t border-blue-700 mt-4">
                 <a @click="logout"

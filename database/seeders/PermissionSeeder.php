@@ -14,6 +14,7 @@ class PermissionSeeder extends Seeder
         'manage-nilai',
         'import-excel',
         'export-excel',
+        'manage-settings',
     ];
 
     /**
@@ -47,6 +48,8 @@ class PermissionSeeder extends Seeder
             'view-dashboard',
             'manage-siswa',
             'manage-nilai',
+            'import-excel',
+            'export-excel',
         ])->get();
         $teacherRole->syncPermissions($teacherPermissions);
 

@@ -82,6 +82,11 @@ const gradeBadgeClass = (grade) => {
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center space-x-2">
+                                    <Link :href="route('admin.students.show', siswa.id)"
+                                        class="p-2 text-green-600 hover:bg-green-100 rounded-lg transition"
+                                        title="Detail">
+                                    <i class="fas fa-eye"></i>
+                                    </Link>
                                     <Link :href="route('admin.students.edit', siswa.id)"
                                         class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition" title="Edit">
                                     <i class="fas fa-edit"></i>
@@ -111,7 +116,7 @@ const gradeBadgeClass = (grade) => {
                     <p class="text-sm text-gray-700">
                         Menampilkan <span class="font-medium">{{ students.from }}</span> sampai <span
                             class="font-medium">{{ students.to }}</span> dari <span class="font-medium">{{
-                            students.total }}</span> hasil
+                                students.total }}</span> hasil
                     </p>
                     <div class="flex items-center space-x-1">
                         <template v-for="(link, index) in students.links" :key="index">

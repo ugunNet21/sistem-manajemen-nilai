@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Siswa;
-use App\Services\Admin\DashboardService; // <-- Import Service
+use App\Services\Admin\DashboardService;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 

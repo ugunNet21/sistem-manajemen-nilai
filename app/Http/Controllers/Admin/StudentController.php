@@ -25,7 +25,7 @@ class StudentController extends Controller
     public function index(): Response
     {
         $students = $this->studentService->all();
-        
+
         // Menambahkan properti 'rata_rata' dan 'grade' ke setiap item siswa
         $students->getCollection()->transform(function ($student) {
             $student->rata_rata = $student->getRataRataAttribute();
@@ -57,6 +57,38 @@ class StudentController extends Controller
             ->with('success', 'Data siswa berhasil ditambahkan.');
     }
 
+    public function show(string $id): Response
+    {
+        $student = $this->studentService->find($id);
+
+        // Load relasi nilai
+        $student->load(['nilai']);
+
+        // Hitung statistik
+        $student->rata_rata = $student->getRataRataAttribute();
+        $student->grade = $student->getGradeAttribute();
+        $student->nilai_count = $student->nilai->count();
+        $student->nilai_tertinggi = $student->nilai->max('nilai') ?? 0;
+        $student->nilai_terendah = $student->nilai->min('nilai') ?? 0;
+
+        // Hitung statistik per mapel
+        $statistics = [
+            'total_mapel' => $student->nilai->unique('mapel')->count(),
+            'mapel_dengan_nilai' => $student->nilai->groupBy('mapel')->map(function ($nilaiGroup) {
+                return [
+                    'count' => $nilaiGroup->count(),
+                    'rata_rata' => $nilaiGroup->avg('nilai'),
+                    'nilai_tertinggi' => $nilaiGroup->max('nilai'),
+                    'nilai_terendah' => $nilaiGroup->min('nilai'),
+                ];
+            })
+        ];
+
+        return Inertia::render('Admin/Students/Show', [
+            'student' => $student,
+            'statistics' => $statistics,
+        ]);
+    }
     /**
      * Menampilkan halaman form untuk mengedit data siswa.
      * Menggunakan Route-Model Binding untuk efisiensi.

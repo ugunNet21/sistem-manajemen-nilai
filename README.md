@@ -7,6 +7,10 @@ Project ini adalah aplikasi sederhana untuk mengelola data nilai siswa. Aplikasi
 
 ### Dashboard
 ![Dashboard](public/assets/images/img-dashboard.png)
+![Dashboard](public/assets/images/img-dashboard-2.png)
+![Search](public/assets/images/img-search-admin.png)
+
+![Students](public/assets/images/img-detail-student.png)
 
 ### Landing Page
 ![Landing Page](public/assets/images/img-landingpage.png)

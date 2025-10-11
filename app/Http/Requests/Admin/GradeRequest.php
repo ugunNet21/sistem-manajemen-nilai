@@ -9,21 +9,22 @@ class GradeRequest extends FormRequest
 {
     public function authorize(): bool
     {
-
         return true;
     }
 
     public function rules(): array
     {
+        $gradeId = $this->route('id');
+
         return [
             'siswa_id' => 'required|exists:siswa,id',
             'mapel' => [
                 'required',
                 'string',
                 'max:100',
-                Rule::unique('nilai')->where(function ($query) {
-                    return $query->where('siswa_id', $this->input('siswa_id'));
-                })->ignore($this->grade),
+                Rule::unique('nilai')
+                    ->where('siswa_id', $this->input('siswa_id'))
+                    ->ignore($gradeId),
             ],
             'nilai' => 'required|integer|min:0|max:100',
         ];

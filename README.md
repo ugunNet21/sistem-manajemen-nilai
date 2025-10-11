@@ -117,11 +117,13 @@ npm install
 ### 5. Jalankan Migration dan Seeder
 1. Jalankan migration untuk membuat tabel database (siswa dan nilai, beserta tabel default seperti users, sessions, dll.):
 ```bash
-php artisan migrate
+- migrasi database: php artisan migrate
+- migrasi, drop, run seeder : php artisan migrate:fresh --seed 
 ```
-2. Jika ada seeder untuk data awal (misalnya, user contoh), jalankan:
+2. Jika run seeder saja:
 ```bash
-php artisan db:seed
+- run semua list seeder: php artisan db:seed
+- run contoh user seeder: php artisan db:seed --class=UserSeeder
 ```
 
 ### 6. Compile Assets

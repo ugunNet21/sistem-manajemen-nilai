@@ -112,6 +112,8 @@ composer require ramsey/uuid
 3. Install Node.js dependencies untuk frontend:
 ```bash
 npm install
+npm install lodash
+
 ```
 
 ### 5. Jalankan Migration dan Seeder

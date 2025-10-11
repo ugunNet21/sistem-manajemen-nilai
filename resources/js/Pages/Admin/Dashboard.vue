@@ -24,6 +24,7 @@ const props = defineProps({
 const showFormModal = ref(false);
 const showImportModal = ref(false);
 const gradeToEdit = ref(null);
+const isExporting = ref(false);
 
 const statsData = computed(() => [
     { label: 'Total Siswa', value: props.stats.total_siswa, icon: 'fas fa-users', color: 'blue' },
@@ -31,6 +32,11 @@ const statsData = computed(() => [
     { label: 'Total Kelas', value: props.stats.total_kelas, icon: 'fas fa-school', color: 'purple' },
     { label: 'Total Mapel', value: props.stats.total_mapel, icon: 'fas fa-book', color: 'orange' },
 ]);
+
+// Build query string untuk export URL
+const getExportUrl = () => {
+    return route('grades.export');
+};
 
 const openEditModal = (grade) => {
     gradeToEdit.value = grade;
@@ -51,6 +57,12 @@ const gradeBadgeClass = (grade) => ({
     'bg-yellow-100 text-yellow-800': grade === 'C',
     'bg-red-100 text-red-800': grade === 'D',
 });
+
+// Handle export click
+const handleExport = () => {
+    isExporting.value = true;
+    setTimeout(() => { isExporting.value = false; }, 2000);
+};
 </script>
 
 <template>
@@ -84,6 +96,13 @@ const gradeBadgeClass = (grade) => ({
                         class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm inline-flex items-center">
                         <i class="fas fa-file-import mr-2"></i> Import
                     </button>
+                    <a :href="getExportUrl()" @click="handleExport"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm inline-flex items-center disabled:opacity-50"
+                        :class="{ 'cursor-not-allowed': isExporting }">
+                        <i v-if="!isExporting" class="fas fa-file-export mr-2"></i>
+                        <i v-else class="fas fa-spinner fa-spin mr-2"></i>
+                        {{ isExporting ? 'Mendownload...' : 'Export Excel' }}
+                    </a>
                     <Link :href="route('admin.grades.index')"
                         class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-sm inline-flex items-center">
                     <i class="fas fa-tasks mr-2"></i> Kelola Semua
@@ -105,7 +124,7 @@ const gradeBadgeClass = (grade) => ({
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="item in recentGrades" :key="item.id" class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ item.siswa.nama
-                            }} <span class="text-gray-500">({{ item.siswa.kelas }})</span></td>
+                                }} <span class="text-gray-500">({{ item.siswa.kelas }})</span></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ item.mapel }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-center font-semibold text-gray-800">{{
                                 item.nilai }}</td>

@@ -1,17 +1,25 @@
+<!--js/Components/AuthenticationCardLogo.vue-->
 <script setup>
 import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Link :href="'/'">
-        <svg
-            class="size-16"
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path d="M11.395 44.428C4.557 40.198 0 32.632 0 24 0 10.745 10.745 0 24 0a23.891 23.891 0 0113.997 4.502c-.2 17.907-11.097 33.245-26.602 39.926z" fill="#6875F5" />
-            <path d="M14.134 45.885A23.914 23.914 0 0024 48c13.255 0 24-10.745 24-24 0-3.516-.756-6.856-2.115-9.866-4.659 15.143-16.608 27.092-31.75 31.751z" fill="#6875F5" />
-        </svg>
+    <Link :href="'/'" class="flex items-center space-x-3 group">
+        <!-- Icon dengan gradient -->
+        <div class="relative">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                <i class="fas fa-graduation-cap text-white text-xl"></i>
+            </div>
+            <!-- Efek ping animasi -->
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 animate-ping opacity-20"></div>
+        </div>
+        
+        <!-- Teks -->
+        <div class="text-left">
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                SistemNilai
+            </h1>
+            <p class="text-xs text-gray-500 font-medium">Platform Nilai Digital</p>
+        </div>
     </Link>
 </template>

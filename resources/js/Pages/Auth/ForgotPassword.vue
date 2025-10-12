@@ -1,3 +1,4 @@
+<!--js/Pages/Auth/ForgotPassword.vue-->
 <script setup>
 import { Head, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';

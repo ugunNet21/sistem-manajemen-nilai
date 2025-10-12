@@ -1,3 +1,4 @@
+<!--js/Pages/Auth/ConfirmPassword.vue-->
 <script setup>
 import { ref } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';

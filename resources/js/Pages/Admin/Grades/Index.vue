@@ -5,6 +5,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { ref, reactive, watch } from 'vue';
 import ModalForm from './ModalForm.vue';
 import ModalImportExcel from './ModalImportExcel.vue';
+import Pagination from '@/Components/Admin/Pagination.vue';
 import { debounce } from 'lodash';
 
 defineOptions({ layout: AdminLayout });
@@ -78,22 +79,25 @@ const handleExport = () => {
 
 <template>
     <div>
+
         <Head title="Data Nilai" />
-       
+
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Data Nilai Siswa</h1>
             <div class="flex flex-wrap gap-3">
-                <button @click="showImportModal = true" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition shadow-sm inline-flex items-center">
+                <button @click="showImportModal = true"
+                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition shadow-sm inline-flex items-center">
                     <i class="fas fa-file-import mr-2"></i>Import Excel
                 </button>
-                <a :href="getExportUrl()" @click="handleExport" 
-                   class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-sm inline-flex items-center disabled:opacity-50"
-                   :class="{ 'cursor-not-allowed': isExporting }">
+                <a :href="getExportUrl()" @click="handleExport"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-sm inline-flex items-center disabled:opacity-50"
+                    :class="{ 'cursor-not-allowed': isExporting }">
                     <i v-if="!isExporting" class="fas fa-file-export mr-2"></i>
                     <i v-else class="fas fa-spinner fa-spin mr-2"></i>
                     {{ isExporting ? 'Mendownload...' : 'Export Excel' }}
                 </a>
-                <button @click="openAddModal" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition shadow-sm inline-flex items-center">
+                <button @click="openAddModal"
+                    class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition shadow-sm inline-flex items-center">
                     <i class="fas fa-plus mr-2"></i>Tambah Nilai
                 </button>
             </div>
@@ -101,15 +105,18 @@ const handleExport = () => {
 
         <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <select v-model="filters.kelas" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                <select v-model="filters.kelas"
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                     <option value="">Semua Kelas</option>
                     <option v-for="kelas in unique.kelas" :key="kelas" :value="kelas">{{ kelas }}</option>
                 </select>
-                <select v-model="filters.mapel" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                <select v-model="filters.mapel"
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                     <option value="">Semua Mapel</option>
                     <option v-for="mapel in unique.mapel" :key="mapel" :value="mapel">{{ mapel }}</option>
                 </select>
-                <select v-model="filters.grade" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                <select v-model="filters.grade"
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
                     <option value="">Semua Grade</option>
                     <option value="A">A (85-100)</option>
                     <option value="B">B (70-84)</option>
@@ -118,7 +125,7 @@ const handleExport = () => {
                 </select>
             </div>
         </div>
-       
+
         <div class="bg-white rounded-xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
@@ -141,35 +148,30 @@ const handleExport = () => {
                             <td class="px-6 py-4 text-sm text-gray-600">{{ item.mapel }}</td>
                             <td class="px-6 py-4 text-sm font-semibold text-gray-800">{{ item.nilai }}</td>
                             <td class="px-6 py-4">
-                                <span class="px-3 py-1 rounded-full text-xs font-bold" :class="gradeBadgeClass(item.grade)">{{ item.grade }}</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold"
+                                    :class="gradeBadgeClass(item.grade)">{{ item.grade }}</span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center space-x-2">
-                                    <button @click="openEditModal(item)" class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button @click="deleteGrade(item)" class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition" title="Hapus"><i class="fas fa-trash"></i></button>
+                                    <button @click="openEditModal(item)"
+                                        class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition"
+                                        title="Edit"><i class="fas fa-edit"></i></button>
+                                    <button @click="deleteGrade(item)"
+                                        class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition" title="Hapus"><i
+                                            class="fas fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
-                     <tbody v-else>
-                        <tr><td colspan="7" class="text-center py-12 text-gray-500">Belum ada data nilai.</td></tr>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="7" class="text-center py-12 text-gray-500">Belum ada data nilai.</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div v-if="grades.links.length > 3" class="p-4 border-t">
-                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <p class="text-sm text-gray-700">
-                        Menampilkan <span class="font-medium">{{ grades.from }}</span> - <span class="font-medium">{{ grades.to }}</span> dari <span class="font-medium">{{ grades.total }}</span> hasil
-                    </p>
-                    <div class="flex items-center space-x-1">
-                        <template v-for="(link, index) in grades.links" :key="index">
-                            <Link v-if="link.url" :href="link.url" v-html="link.label" class="px-3 py-2 text-sm rounded-md" :class="{'bg-purple-600 text-white': link.active, 'bg-white hover:bg-gray-100 border': !link.active}"/>
-                            <span v-else v-html="link.label" class="px-3 py-2 text-sm text-gray-400 bg-gray-100 rounded-md border cursor-not-allowed"/>
-                        </template>
-                    </div>
-                </div>
-            </div>
+            <Pagination :paginator="grades" />
         </div>
 
         <ModalForm :show="showFormModal" :students="students" :grade="gradeToEdit" @close="showFormModal = false" />

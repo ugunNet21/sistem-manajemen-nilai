@@ -7,12 +7,13 @@
     <title>Raport {{ $student->nama }}</title>
     <style>
         @page {
-            margin: 20px;
+            margin: 25px;
         }
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
             line-height: 1.4;
             color: #333;
+            font-size: 12px;
         }
         .header {
             text-align: center;
@@ -21,18 +22,19 @@
             margin-bottom: 20px;
         }
         .school-name {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             margin-bottom: 5px;
         }
         .school-address {
-            font-size: 12px;
+            font-size: 14px;
             margin-bottom: 10px;
         }
         .report-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
-            margin: 15px 0;
+            margin: 20px 0;
+            text-transform: uppercase;
         }
         .student-info {
             margin: 20px 0;
@@ -43,18 +45,17 @@
             margin: 10px 0;
         }
         .info-table td {
-            padding: 5px 10px;
-            border: 1px solid #ddd;
+            padding: 6px 10px;
         }
         .info-table .label {
             font-weight: bold;
-            width: 30%;
-            background-color: #f5f5f5;
+            width: 25%;
         }
         .grades-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            page-break-inside: avoid; /* Mencegah tabel terpotong */
         }
         .grades-table th,
         .grades-table td {
@@ -70,30 +71,43 @@
             margin-top: 30px;
             padding: 15px;
             border: 1px solid #333;
+            background-color: #f9f9f9;
+            page-break-inside: avoid; /* Mencegah ringkasan terpotong */
         }
         .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
+            padding: 4px 0;
+        }
+        .summary-item span {
+            display: inline-block;
+        }
+        .summary-item span:first-child {
+            width: 60%;
+        }
+        .summary-item span:last-child {
+            font-weight: bold;
         }
         .footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 12px;
-        }
-        .signature-area {
             margin-top: 40px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .signature {
             text-align: center;
-            width: 45%;
+            font-size: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        .signature-table {
+            width: 100%;
+            margin-top: 50px;
+            page-break-inside: avoid; /* Mencegah area ttd terpotong */
+        }
+        .signature-table td {
+            text-align: center;
+            width: 50%;
+            padding: 10px;
         }
         .signature-line {
-            margin-top: 60px;
-            border-top: 1px solid #333;
-            padding-top: 5px;
+            margin-top: 70px;
+            font-weight: bold;
         }
         .grade-A { color: #059669; font-weight: bold; }
         .grade-B { color: #2563eb; font-weight: bold; }
@@ -103,47 +117,41 @@
 </head>
 <body>
     <div class="header">
-        <div class="school-name">MADRASAH / SEKOLAH TK PERCOBAAN</div>
-        <div class="school-address">Alamat: Jl. Pendidikan No. 123, Kota Contoh</div>
-        <div class="report-title">LAPORAN HASIL BELAJAR SISWA</div>
+        <div class="school-name">MADRASAH SYARI'UL JANNAH</div>
+        <div class="school-address">Alamat: Jl. Pasar Sindanglaya No. RT 06 RW 01, KOTA BANDUNG</div>
+        <div class="report-title">Laporan Hasil Belajar Siswa</div>
         <div>Tahun Ajaran: {{ $tahunAjaran }}</div>
     </div>
 
     <!-- Informasi Siswa -->
-    <div class="student-info">
-        <table class="info-table">
-            <tr>
-                <td class="label">Nama Siswa</td>
-                <td>{{ $student->nama }}</td>
-            </tr>
-            <tr>
-                <td class="label">Kelas</td>
-                <td>{{ $student->kelas }}</td>
-            </tr>
-            <tr>
-                <td class="label">ID Siswa</td>
-                <td>{{ $student->id }}</td>
-            </tr>
-            <tr>
-                <td class="label">Tanggal Cetak</td>
-                <td>{{ $tanggal }}</td>
-            </tr>
-        </table>
-    </div>
+    <table class="info-table">
+        <tr>
+            <td class="label">Nama Siswa</td>
+            <td>: {{ $student->nama }}</td>
+            <td class="label">Kelas</td>
+            <td>: {{ $student->kelas }}</td>
+        </tr>
+        <tr>
+            <td class="label">ID Siswa</td>
+            <td>: {{ $student->id }}</td>
+            <td class="label">Tanggal Cetak</td>
+            <td>: {{ $tanggal }}</td>
+        </tr>
+    </table>
 
     <!-- Nilai Mata Pelajaran -->
-    <div class="report-title">HASIL BELAJAR</div>
+    <div class="report-title" style="text-align: center;">Hasil Belajar</div>
     
     @if($nilaiPerMapel->count() > 0)
         <table class="grades-table">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th style="width: 5%;">No</th>
                     <th>Mata Pelajaran / Aspek</th>
-                    <th>Nilai Rata-rata</th>
-                    <th>Nilai Tertinggi</th>
-                    <th>Nilai Terendah</th>
-                    <th>Grade</th>
+                    <th style="width: 15%;">Nilai Rata-rata</th>
+                    <th style="width: 15%;">Nilai Tertinggi</th>
+                    <th style="width: 15%;">Nilai Terendah</th>
+                    <th style="width: 10%;">Grade</th>
                 </tr>
             </thead>
             <tbody>
@@ -165,62 +173,60 @@
             </tbody>
         </table>
     @else
-        <p style="text-align: center; color: #666; font-style: italic;">
+        <p style="text-align: center; color: #666; font-style: italic; padding: 30px; border: 1px dashed #ccc;">
             Belum ada data nilai untuk siswa ini.
         </p>
     @endif
 
     <!-- Ringkasan -->
     <div class="summary">
-        <div style="font-weight: bold; margin-bottom: 15px; text-align: center;">
+        <div style="font-weight: bold; margin-bottom: 10px; text-align: center; font-size: 14px;">
             RINGKASAN HASIL BELAJAR
         </div>
         <div class="summary-item">
-            <span>Total Mata Pelajaran:</span>
-            <span>{{ $nilaiPerMapel->count() }}</span>
+            <span>Total Mata Pelajaran</span>
+            <span>: {{ $nilaiPerMapel->count() }}</span>
         </div>
         <div class="summary-item">
-            <span>Total Nilai:</span>
-            <span>{{ $student->nilai_count }}</span>
+            <span>Rata-rata Nilai Keseluruhan</span>
+            <span>: {{ number_format($student->rata_rata, 2) }}</span>
         </div>
         <div class="summary-item">
-            <span>Nilai Rata-rata Keseluruhan:</span>
-            <span>{{ number_format($student->rata_rata, 2) }}</span>
+            <span>Nilai Tertinggi Keseluruhan</span>
+            <span>: {{ $student->nilai_tertinggi }}</span>
         </div>
         <div class="summary-item">
-            <span>Nilai Tertinggi:</span>
-            <span>{{ $student->nilai_tertinggi }}</span>
+            <span>Nilai Terendah Keseluruhan</span>
+            <span>: {{ $student->nilai_terendah }}</span>
         </div>
         <div class="summary-item">
-            <span>Nilai Terendah:</span>
-            <span>{{ $student->nilai_terendah }}</span>
-        </div>
-        <div class="summary-item">
-            <span>Grade Akhir:</span>
-            <span class="grade-{{ $student->grade }}">{{ $student->grade }}</span>
+            <span>Grade Akhir</span>
+            <span>: <span class="grade-{{ $student->grade }}">{{ $student->grade }}</span></span>
         </div>
     </div>
 
     <!-- Keterangan Grade -->
-    <div style="margin-top: 20px; font-size: 12px;">
-        <strong>Keterangan Grade:</strong><br>
+    <div style="margin-top: 20px; font-size: 11px;">
+        <strong>Keterangan Grade:</strong>
         A = Sangat Baik (85-100), B = Baik (70-84), C = Cukup (60-69), D = Perlu Bimbingan (≤59)
     </div>
 
     <!-- Tanda Tangan -->
-    <div class="signature-area">
-        <div class="signature">
-            Orang Tua/Wali<br>
-            <div class="signature-line">(___________________)</div>
-        </div>
-        <div class="signature">
-            Guru Kelas<br>
-            <div class="signature-line">(___________________)</div>
-        </div>
-    </div>
+    <table class="signature-table">
+        <tr>
+            <td>
+                Mengetahui,<br>Orang Tua/Wali Murid
+                <div class="signature-line">(___________________)</div>
+            </td>
+            <td>
+                Kota Contoh, {{ $tanggal }}<br>Guru Kelas
+                <div class="signature-line">(___________________)</div>
+            </td>
+        </tr>
+    </table>
 
     <div class="footer">
-        Dokumen ini dicetak secara elektronik pada {{ $tanggal }}
+        Dokumen ini dicetak secara elektronik dan dianggap sah tanpa tanda tangan basah.
     </div>
 </body>
 </html>

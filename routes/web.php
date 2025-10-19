@@ -15,6 +15,10 @@ Route::prefix('admin')->middleware([
 ])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
+    // Global Search
+    Route::get('/search', [App\Http\Controllers\Admin\SearchController::class, 'index'])->name('admin.search');
+    Route::get('/search/autocomplete', [App\Http\Controllers\Admin\SearchController::class, 'autocomplete'])->name('admin.search.autocomplete');
+    
     // Students
     Route::resource('students', App\Http\Controllers\Admin\StudentController::class)
         ->names('admin.students')

@@ -2,6 +2,7 @@
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
+import Pagination from '@/Components/Admin/Pagination.vue';
 import { ref } from 'vue';
 
 defineOptions({
@@ -82,6 +83,11 @@ const gradeBadgeClass = (grade) => {
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center space-x-2">
+                                    <Link :href="route('admin.students.show', siswa.id)"
+                                        class="p-2 text-green-600 hover:bg-green-100 rounded-lg transition"
+                                        title="Detail">
+                                    <i class="fas fa-eye"></i>
+                                    </Link>
                                     <Link :href="route('admin.students.edit', siswa.id)"
                                         class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition" title="Edit">
                                     <i class="fas fa-edit"></i>
@@ -106,26 +112,7 @@ const gradeBadgeClass = (grade) => {
             </div>
 
             <!-- Paginasi -->
-            <div v-if="students.data.length > 0 && students.links.length > 3" class="p-4 border-t border-gray-200">
-                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <p class="text-sm text-gray-700">
-                        Menampilkan <span class="font-medium">{{ students.from }}</span> sampai <span
-                            class="font-medium">{{ students.to }}</span> dari <span class="font-medium">{{
-                            students.total }}</span> hasil
-                    </p>
-                    <div class="flex items-center space-x-1">
-                        <template v-for="(link, index) in students.links" :key="index">
-                            <Link v-if="link.url" :href="link.url" v-html="link.label"
-                                class="px-3 py-2 text-sm rounded-md" :class="{
-                                    'bg-purple-600 text-white': link.active,
-                                    'bg-white hover:bg-gray-100 text-gray-700 border border-gray-300': !link.active
-                                }" />
-                            <span v-else v-html="link.label"
-                                class="px-3 py-2 text-sm text-gray-400 bg-gray-100 rounded-md border border-gray-300 cursor-not-allowed" />
-                        </template>
-                    </div>
-                </div>
-            </div>
+            <Pagination :paginator="students" />
         </div>
     </div>
 </template>

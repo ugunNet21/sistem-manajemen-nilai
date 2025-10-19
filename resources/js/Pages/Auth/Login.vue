@@ -1,3 +1,4 @@
+<!--js/Pages/Auth/Login.vue-->
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
@@ -5,8 +6,8 @@ import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import EnhancedButton from '@/Components/EnhancedButton.vue';
+import EnhancedTextInput from '@/Components/EnhancedTextInput.vue';
 
 defineProps({
     canResetPassword: Boolean,
@@ -30,60 +31,106 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="Masuk ke SistemNilai" />
 
-    <AuthenticationCard>
+    <AuthenticationCard background="gradient">
         <template #logo>
             <AuthenticationCardLogo />
         </template>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
+        <!-- Status Message -->
+        <div v-if="status" class="mb-6 animate-slide-up">
+            <InputError :message="status" type="success" />
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="space-y-6">
+            <!-- Email Input -->
             <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
+                <InputLabel value="Alamat Email" required />
+                <EnhancedTextInput
                     v-model="form.email"
                     type="email"
-                    class="mt-1 block w-full"
+                    placeholder="masukkan.email@sekolah.com"
                     required
                     autofocus
                     autocomplete="username"
+                    icon="fas fa-envelope"
+                    :error="form.errors.email"
                 />
-                <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
+            <!-- Password Input -->
+            <div>
+                <InputLabel value="Kata Sandi" required />
+                <EnhancedTextInput
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
+                    placeholder="Masukkan kata sandi Anda"
                     required
                     autocomplete="current-password"
+                    icon="fas fa-lock"
+                    :error="form.errors.password"
                 />
-                <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
+            <!-- Remember & Forgot Password -->
+            <div class="flex items-center justify-between">
+                <label class="flex items-center space-x-3 cursor-pointer group">
                     <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
+                    <span class="text-sm text-gray-700 font-medium group-hover:text-gray-900 transition-colors">
+                        Ingat saya
+                    </span>
                 </label>
+
+                <Link 
+                    v-if="canResetPassword" 
+                    :href="route('password.request')" 
+                    class="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors flex items-center space-x-1"
+                >
+                    <i class="fas fa-key"></i>
+                    <span>Lupa kata sandi?</span>
+                </Link>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Forgot your password?
-                </Link>
+            <!-- Submit Button -->
+            <EnhancedButton
+                type="submit"
+                variant="primary"
+                size="large"
+                :loading="form.processing"
+                :disabled="form.processing"
+                fullWidth
+                icon="fas fa-sign-in-alt"
+            >
+                Masuk ke Sistem
+            </EnhancedButton>
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
+            <!-- Register Link -->
+            <div class="text-center pt-4 border-t border-gray-200">
+                <p class="text-gray-600 text-sm">
+                    Belum punya akun?
+                    <Link :href="route('register')" class="text-blue-600 hover:text-blue-700 font-semibold transition-colors ml-1">
+                        Daftar Sekarang
+                    </Link>
+                </p>
+            </div>
+
+            <!-- Demo Credentials -->
+            <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200 animate-fade-in">
+                <h3 class="text-sm font-semibold text-blue-800 mb-3 flex items-center space-x-2">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Info Login Demo</span>
+                </h3>
+                <div class="text-xs text-blue-700 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">Email:</span>
+                        <code class="bg-blue-100 px-2 py-1 rounded">admin@sekolahku.com</code>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">Password:</span>
+                        <code class="bg-blue-100 px-2 py-1 rounded">password</code>
+                    </div>
+                </div>
             </div>
         </form>
     </AuthenticationCard>

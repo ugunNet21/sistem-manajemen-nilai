@@ -20,6 +20,10 @@ Route::prefix('admin')->middleware([
     Route::get('/search/autocomplete', [App\Http\Controllers\Admin\SearchController::class, 'autocomplete'])->name('admin.search.autocomplete');
     
     // Students
+    Route::get('/students/{id}/report/pdf', [App\Http\Controllers\Admin\StudentReportController::class, 'exportPdf'])
+        ->name('admin.students.report.pdf');
+    Route::get('/students/{id}/report/preview', [App\Http\Controllers\Admin\StudentReportController::class, 'previewPdf'])
+        ->name('admin.students.report.preview');
     Route::resource('students', App\Http\Controllers\Admin\StudentController::class)
         ->names('admin.students')
         ->parameters(['students' => 'id']);

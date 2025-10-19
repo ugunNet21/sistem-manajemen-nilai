@@ -67,6 +67,19 @@ const getGradeFromScore = (nilai) => {
                     <i class="fas fa-arrow-left mr-2"></i>
                     Kembali
                     </Link>
+                    <!-- Tombol Preview PDF -->
+                    <Link :href="route('admin.students.report.preview', student.id)" target="_blank"
+                        class="px-4 py-2 text-sm font-medium text-green-700 bg-white border border-green-300 rounded-lg hover:bg-green-50 transition shadow-sm inline-flex items-center">
+                    <i class="fas fa-eye mr-2"></i>
+                    Preview Raport
+                    </Link>
+
+                    <!-- Tombol Download PDF -->
+                    <a :href="route('admin.students.report.pdf', student.id)"
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm inline-flex items-center">
+                        <i class="fas fa-file-pdf mr-2"></i>
+                        Export PDF
+                    </a>
                     <Link :href="route('admin.students.edit', student.id)"
                         class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition shadow-sm inline-flex items-center">
                     <i class="fas fa-edit mr-2"></i>

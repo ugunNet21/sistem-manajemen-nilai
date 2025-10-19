@@ -16,14 +16,14 @@ class StudentReportController extends Controller
     {
         $student = Siswa::with(['nilai'])->findOrFail($id);
 
-        // Hitung statistik
+        // Menghitung statistik untuk ditampilkan di raport
         $student->rata_rata = $student->getRataRataAttribute();
         $student->grade = $student->getGradeAttribute();
         $student->nilai_count = $student->nilai->count();
         $student->nilai_tertinggi = $student->nilai->max('nilai') ?? 0;
         $student->nilai_terendah = $student->nilai->min('nilai') ?? 0;
 
-        // Kelompokkan nilai per mapel
+        // Mengelompokkan nilai berdasarkan mata pelajaran dan menghitung statistik per mapel
         $nilaiPerMapel = $student->nilai->groupBy('mapel')->map(function ($nilaiGroup) {
             return [
                 'rata_rata' => $nilaiGroup->avg('nilai'),
@@ -41,8 +41,9 @@ class StudentReportController extends Controller
             'tahunAjaran' => now()->year . '/' . (now()->year + 1)
         ];
 
-        $pdf = Pdf::loadView('admin.students.report-pdf', $data);
-        
+        $pdf = Pdf::loadView('admin.students.report-pdf', $data)
+            ->setPaper('F4', 'portrait');
+
         return $pdf->download("raport-{$student->nama}-{$student->kelas}.pdf");
     }
 
@@ -53,14 +54,12 @@ class StudentReportController extends Controller
     {
         $student = Siswa::with(['nilai'])->findOrFail($id);
 
-        // Hitung statistik
         $student->rata_rata = $student->getRataRataAttribute();
         $student->grade = $student->getGradeAttribute();
         $student->nilai_count = $student->nilai->count();
         $student->nilai_tertinggi = $student->nilai->max('nilai') ?? 0;
         $student->nilai_terendah = $student->nilai->min('nilai') ?? 0;
 
-        // Kelompokkan nilai per mapel
         $nilaiPerMapel = $student->nilai->groupBy('mapel')->map(function ($nilaiGroup) {
             return [
                 'rata_rata' => $nilaiGroup->avg('nilai'),
